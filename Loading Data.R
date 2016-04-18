@@ -23,9 +23,11 @@ names(census) <- c("age","workclass","fnlwgt","education",
                    "education_num", "marital_status", "occupation", "relationship", "race", "sex",
                    "capital_gain","capital_loss","hrs_per_week", 
                    "native_country","target")
-
+#setup for calculation of correlation to understand relationships
 census[census$target==">50K","targetB"] <- 1
 census[census$target=="<=50K","targetB"] <- 0
+
+#Because of the sign in front, the logistic regression does not work
 census[census$target==">50K","targetF"] <- "GT50"
 census[census$target=="<=50K","targetF"] <- "LE50"
 census$targetF <- as.factor(census$targetF)
