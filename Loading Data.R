@@ -39,7 +39,7 @@ censusValid <- census[-train_c,]
 
 #Modeling Starts here
 #Logistic regression
-myControl <- trainControl(method='repeatedcv', number =10)
+myControl <- trainControl(method='repeatedcv', number =10, repeats=3)
 census_log <- train(targetF~race+sex+hrs_per_week+education_num+age,data=censusTrain,method='glm', family=binomial(link="logit"),trControl=myControl)
 censuslogvalid <- predict(census_log,censusValid,type="prob")
 censuslogvalid$pred <- predict(census_log,censusValid)
