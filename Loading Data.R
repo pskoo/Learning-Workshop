@@ -39,6 +39,10 @@ train_c <- createDataPartition (census$target, p=.8,list=FALSE,times=1)
 censusTrain <- census[train_c,] 
 censusValid <- census[-train_c,]
 
+#graphical presentation
+qplot(target,age,data=census,geom="boxplot")
+qplot(age, hrs_per_week,data=census, color=target, facets=.~target, geom=c("point","smooth"),method="lm")
+
 #Modeling Starts here
 #Logistic regression
 myControl <- trainControl(method='repeatedcv', number =10, repeats=3)
@@ -58,6 +62,9 @@ confusionMatrix(predtreeValid,censusValid$targetF)
 census_gbm <- train(targetF~race+sex+hrs_per_week+education_num+age,data=censusTrain,method='gbm',trControl=myControl)
 predgbmValid <- predict(census_gbm, censusValid)
 confusionMatrix(predgbmValid,censusValid$targetF)
+
+#plotting Decision Tree
+fancyRpartPlot(census_tree$finalModel)
 
 #Random_forest
 census_rf <- train(targetF~race+sex+hrs_per_week+education_num+age,data=censusTrain,method='rf',trControl=myControl)
