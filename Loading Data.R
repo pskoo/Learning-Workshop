@@ -7,7 +7,9 @@ library(rattle)
 
 #setup parallel processing
 library(doSNOW)
-cl <- makeCluster(8, type = "SOCK")
+library(parallel)
+coreNumber <- max(detectCores()-1,1)
+cl <- makeCluster(coreNumber, type = "SOCK")
 registerDoSNOW(cl)
 
 #set working directory
@@ -62,3 +64,4 @@ census_rf <- train(targetF~race+sex+hrs_per_week+education_num+age,data=censusTr
 predrfValid <- predict(census_rf, censusValid)
 confusionMatrix(predrfValid,censusValid$targetF)
 
+stopCluster(cl)
